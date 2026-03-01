@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="자동 Bing 검색 확장 프로그램 - Side Panel UI">
+  <meta name="color-scheme" content="light dark">
+  <title>Auto Bing Search - Side Panel</title>
+  >
+</head>
+<body>
+  <div class="container">
+    <!-- ════════════════════════════════════════
+         1. 헤더 섹션
+         ════════════════════════════════════════ -->
+    <header class="header">
+      <h1>🔍 자동 Bing 검색</h1>
+      <p class="subtitle">키워드를 입력하고 자동으로 관련 검색을 수행합니다</p>
+    </header>
+
+    <!-- ════════════════════════════════════════
+         2. 스크롤 가능한 메인 콘텐츠
+         ════════════════════════════════════════ -->
+    <div class="scroll-section">
+      
+      <!-- ─────────────────────────────────────
+           2.1 입력 섹션
+           ───────────────────────────────────── -->
+      <section class="input-section">
+        
+        <!-- 검색 키워드 입력 -->
+        <div class="form-group">
+          abel for="keyword">🎯 검색 키워드</label>
+          <input 
+            type="text" 
+            id="keyword" 
+            placeholder="검색할 키워드를 입력하세요 (예: Python)" 
+            class="input-field"
+            maxlength="100"
+            autocomplete="off"
+            aria-label="검색 키워드 입력"
+          >
+          <small class="help-text">기본 검색어가 됩니다. 한 개의 단어 또는 구를 입력해주세요.</small>
+        </div>
+
+        <!-- 검색 횟수 입력 -->
+        <div class="form-group">
+          abel for="numSearches">📊 검색 횟수</label>
+          <div class="input-group">
+            <input 
+              type="number" 
+              id="numSearches" 
+              min="1" 
+              max="100" 
+              value="5"
+              class="input-field number-input"
+              aria-label="검색 횟수"
+            >
+            <span class="input-suffix">회</span>
+          </div>
+          <small class="help-text">1~100 범위에서 선택하세요. 더 많은 검색은 더 오래 걸립니다.</small>
+        </div>
+
+        <!-- 검색 간 지연 입력 -->
+        <div class="form-group">
+          abel for="delay">⏱️ 검색 간 지연</label>
+          <div class="input-group">
+            <input 
+              type="number" 
+              id="delay" 
+              min="500" 
+              max="10000" 
+              step="500"
+              value="2000"
+              class="input-field number-input"
+              aria-label="검색 간 지연 시간(밀리초)"
+            >
+            <span class="input-suffix">ms</span>
+          </div>
+          <small class="help-text">각 검색 사이의 대기 시간입니다. 권장값: 2000ms</small>
+        </div>
+
+      </section>
+
+      <!-- ─────────────────────────────────────
+           2.2 관련 키워드 섹션
+           ───────────────────────────────────── -->
+      <section class="keywords-section">
+        <div class="section-header">
+          <h2>📝 관련 키워드 (자동 추출)</h2>
+          <button 
+            id="extractBtn" 
+            class="btn btn-secondary btn-small"
+            aria-label="관련 키워드 추출하기"
+            title="입력한 키워드로부터 관련 키워드 20개를 자동으로 추출합니다"
+          >
+            🔄 추출하기
+          </button>
+        </div>
+        
+        <div id="keywordsList" class="keywords-list empty">
+          <p class="placeholder">키워드를 입력하고 '추출하기'를 클릭하세요</p>
+        </div>
+
+        <small class="help-text" style="display: block; margin-top: 8px;">
+          💡 팁: 추출된 키워드는 기본 키워드와 자동으로 조합되어 검색됩니다.
+        </small>
+      </section>
+
+      <!-- ─────────────────────────────────────
+           2.3 고급 설정 섹션
+           ───────────────────────────────────── -->
+      <section class="settings-section">
+        <details>
+          <summary>⚙️ 고급 설정</summary>
+          <div class="settings-content">
+            
+            <!-- 백그라운드 검색 옵션 -->
+            abel class="checkbox-label">
+              <input 
+                type="checkbox" 
+                id="backgroundSearch" 
+                checked
+                aria-label="백그라운드 검색 활성화"
+              >
+              <span>백그라운드에서 검색 (현재 탭 유지)</span>
+            </label>
+
+            <!-- 키워드 조합 모드 -->
+            abel class="checkbox-label">
+              <input 
+                type="checkbox" 
+                id="combineMode" 
+                checked
+                aria-label="키워드 조합 모드 활성화"
+              >
+              <span>키워드 조합 모드 활성화</span>
+            </label>
+
+            <!-- 자동 탭 닫기 옵션 -->
+            abel class="checkbox-label">
+              <input 
+                type="checkbox" 
+                id="autoCloseTab" 
+                checked
+                aria-label="검색 후 탭 자동 닫기"
+              >
+              <span>검색 후 탭 자동 닫기</span>
+            </label>
+
+            <p class="help-text" style="margin-top: 12px;">
+              💡 팁: 조합 모드가 활성화되면 "Python" + "튜토리얼" → "Python 튜토리얼" 형태로 검색합니다.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <!-- ─────────────────────────────────────
+           2.4 진행 상황 섹션
+           ───────────────────────────────────── -->
+      <section class="progress-section" id="progressContainer" style="display: none;">
+        
+        <!-- 진행 상황 헤더 -->
+        <div class="progress-header">
+          <h3>📊 진행 상황</h3>
+          <button 
+            id="clearBtn" 
+            class="btn btn-secondary btn-small"
+            aria-label="로그 지우기"
+          >
+            🗑️ 지우기
+          </button>
+        </div>
+
+        <!-- 진행 바 -->
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div class="progress-text">
+          <span id="progressText">대기 중...</span>
+        </div>
+
+        <!-- 상태 박스 -->
+        <div class="status-box">
+          <div class="status-item">
+            <span class="label">현재 검색어:</span>
+            <span id="currentKeyword" class="value" title="현재 수행 중인 검색 키워드">-</span>
+          </div>
+          <div class="status-item">
+            <span class="label">진행률:</span>
+            <span id="progressPercentage" class="value" title="현재까지의 진행률">0%</span>
+          </div>
+          <div class="status-item">
+            <span class="label">상태:</span>
+            <span id="statusText" class="value" title="현재 상태">대기</span>
+          </div>
+          <div class="status-item">
+            <span class="label">경과 시간:</span>
+            <span id="elapsedTime" class="value" title="시작부터 경과된 시간">0초</span>
+          </div>
+          <div class="status-item">
+            <span class="label">예상 남은 시간:</span>
+            <span id="remainingTime" class="value" title="예상 남은 시간">-</span>
+          </div>
+        </div>
+
+        <!-- 검색 로그 -->
+        <div class="log-section">
+          <h4>📋 검색 로그</h4>
+          <div id="searchLog" class="search-log" role="log" aria-label="검색 실행 로그">
+            <p style="text-align: center; color: var(--text-tertiary); margin: 0;">
+              검색이 시작되지 않았습니다
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- ════════════════════════════════════════
+         3. 하단 제어 섹션 (고정)
+         ════════════════════════════════════════ -->
+    <section class="control-section">
+      <button 
+        id="startBtn" 
+        class="btn btn-primary btn-large"
+        aria-label="검색 시작"
+        title="입력한 설정으로 자동 검색을 시작합니다"
+      >
+        🚀 검색 시작
+      </button>
+      <button 
+        id="stopBtn" 
+        class="btn btn-danger btn-large" 
+        disabled
+        aria-label="검색 중지"
+        title="현재 진행 중인 검색을 중단합니다"
+      >
+        ⏹️ 검색 중지
+      </button>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         4. 푸터
+         ════════════════════════════════════════ -->
+    <footer class="footer">
+      <p>
+        💡 팁: 매분 60회 이상 검색하면 Bing에서 일시적으로 차단될 수 있습니다.<br>
+        📌 버전 1.0 | <a href="#" id="feedbackLink" target="_blank">피드백 보내기</a>
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- JavaScript 파일 로드 -->
+  <script src="sidepanel.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auto Bing Search</title>
+    <link rel="stylesheet" href="sidepanel.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>🔍 Auto Bing Search</h1>
+        <p class="subtitle">자동 키워드 검색 도구</p>
+      </header>
+
+      <div class="scroll-section">
+        <!-- 입력 섹션 -->
+        <div class="input-section">
+          <div class="form-group">
+            <label for="keyword">🎯 검색 키워드</label>
+            <input
+              type="text"
+              id="keyword"
+              class="input-field"
+              placeholder="예: Python"
+            />
+          </div>
+
+          <div class="input-group form-group">
+            <div style="flex: 1">
+              <label for="numSearches">📊 검색 횟수</label>
+              <input
+                type="number"
+                id="numSearches"
+                class="input-field number-input"
+                value="5"
+                min="1"
+                max="100"
+              />
+            </div>
+            <div style="flex: 1">
+              <label for="delay">⏱️ 지연 (ms)</label>
+              <input
+                type="number"
+                id="delay"
+                class="input-field number-input"
+                value="2000"
+                step="100"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- 키워드 섹션 -->
+        <div class="keywords-section">
+          <div class="section-header">
+            <h2>📝 관련 키워드</h2>
+            <button id="extractBtn" class="btn btn-secondary btn-small">
+              🔄 추출하기
+            </button>
+          </div>
+          <div id="keywordsList" class="keywords-list empty">
+            <p class="placeholder">키워드를 입력하고 '추출하기'를 클릭하세요</p>
+          </div>
+        </div>
+
+        <!-- 설정 섹션 -->
+        <div class="settings-section">
+          <details>
+            <summary>⚙️ 고급 설정</summary>
+            <div class="settings-content">
+              <label class="checkbox-label">
+                <input type="checkbox" id="combineMode" checked />
+                <span>키워드 조합 모드 (메인+서브)</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="autoCloseTab" checked />
+                <span>검색 후 탭 자동 닫기</span>
+              </label>
+            </div>
+          </details>
+        </div>
+
+        <!-- 진행 상황 섹션 -->
+        <div
+          class="progress-section"
+          id="progressContainer"
+          style="display: none"
+        >
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+          <div class="progress-text">
+            <span id="progressText">대기 중...</span>
+          </div>
+
+          <div class="status-box">
+            <div class="status-item">
+              <span class="label">현재 검색어:</span>
+              <span id="currentKeyword" class="value">-</span>
+            </div>
+            <div class="status-item">
+              <span class="label">진행률:</span>
+              <span id="progressPercentage" class="value">0%</span>
+            </div>
+          </div>
+
+          <div class="log-section">
+            <h4>📋 검색 로그</h4>
+            <div id="searchLog" class="search-log"></div>
+          </div>
+
+          <!-- 검색 결과 표시 영역 추가 -->
+          <div class="results-section">
+            <div class="section-header">
+              <h4>🔎 검색 결과</h4>
+              <button id="clearResultsBtn" class="btn btn-secondary btn-small">
+                🗑️ 지우기
+              </button>
+            </div>
+            <div id="searchResults"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 제어 섹션 -->
+      <div class="control-section">
+        <button id="startBtn" class="btn btn-primary btn-large">
+          🚀 검색 시작
+        </button>
+        <button id="stopBtn" class="btn btn-danger btn-large" disabled>
+          ⏹️ 중지
+        </button>
+      </div>
+
+      <footer class="footer">
+        <p>Auto Bing Search v1.0</p>
+      </footer>
+    </div>
+    <script src="sidepanel.js"></script>
+  </body>
+</html>

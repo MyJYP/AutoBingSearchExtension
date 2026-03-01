@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Bing Search</title>
+  >
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>🔍 자동 Bing 검색</h1>
+      <p class="subtitle">키워드를 입력하고 자동으로 관련 검색을 수행합니다</p>
+    </header>
+
+    <!-- 메인 입력 섹션 -->
+    <section class="input-section">
+      <div class="form-group">
+        abel for="keyword">🎯 검색 키워드</label>
+        <input 
+          type="text" 
+          id="keyword" 
+          placeholder="검색할 키워드를 입력하세요 (예: Python)" 
+          class="input-field"
+        >
+        <small class="help-text">기본 검색어가 됩니다</small>
+      </div>
+
+      <div class="form-group">
+        abel for="numSearches">📊 검색 횟수</label>
+        <div class="input-group">
+          <input 
+            type="number" 
+            id="numSearches" 
+            min="1" 
+            max="100" 
+            value="5"
+            class="input-field number-input"
+          >
+          <span class="input-suffix">회</span>
+        </div>
+        <small class="help-text">1~100 범위에서 선택</small>
+      </div>
+
+      <div class="form-group">
+        abel for="delay">⏱️ 검색 간 지연</label>
+        <div class="input-group">
+          <input 
+            type="number" 
+            id="delay" 
+            min="500" 
+            max="10000" 
+            step="500"
+            value="2000"
+            class="input-field number-input"
+          >
+          <span class="input-suffix">ms</span>
+        </div>
+        <small class="help-text">각 검색 사이의 대기 시간</small>
+      </div>
+    </section>
+
+    <!-- 관련 키워드 섹션 -->
+    <section class="keywords-section">
+      <div class="section-header">
+        <h2>📝 관련 키워드 (자동 추출)</h2>
+        <button id="extractBtn" class="btn btn-secondary btn-small">
+          추출하기
+        </button>
+      </div>
+      
+      <div id="keywordsList" class="keywords-list">
+        <p class="placeholder">키워드를 입력하고 '추출하기'를 클릭하세요</p>
+      </div>
+    </section>
+
+    <!-- 제어 버튼 섹션 -->
+    <section class="control-section">
+      <button id="startBtn" class="btn btn-primary btn-large">
+        🚀 검색 시작
+      </button>
+      <button id="stopBtn" class="btn btn-danger btn-large" disabled>
+        ⏹️ 검색 중지
+      </button>
+    </section>
+
+    <!-- 진행 상황 섹션 -->
+    <section class="progress-section">
+      <div id="progressContainer" style="display: none;">
+        <div class="progress-header">
+          <h3>진행 상황</h3>
+          <button id="clearBtn" class="btn btn-secondary btn-small">지우기</button>
+        </div>
+
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div class="progress-text">
+          <span id="progressText">대기 중...</span>
+        </div>
+
+        <div class="status-box">
+          <div class="status-item">
+            <span class="label">현재 검색어:</span>
+            <span id="currentKeyword" class="value">-</span>
+          </div>
+          <div class="status-item">
+            <span class="label">진행률:</span>
+            <span id="progressPercentage" class="value">0%</span>
+          </div>
+          <div class="status-item">
+            <span class="label">상태:</span>
+            <span id="statusText" class="value">대기</span>
+          </div>
+        </div>
+
+        <!-- 검색 로그 -->
+        <div class="log-section">
+          <h4>📋 검색 로그</h4>
+          <div id="searchLog" class="search-log"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 설정 섹션 -->
+    <section class="settings-section">
+      <details>
+        <summary>⚙️ 고급 설정</summary>
+        <div class="settings-content">
+          abel class="checkbox-label">
+            <input 
+              type="checkbox" 
+              id="backgroundSearch" 
+              checked
+            >
+            백그라운드에서 검색 (활성 탭 유지)
+          </label>
+          abel class="checkbox-label">
+            <input 
+              type="checkbox" 
+              id="combineMode" 
+              checked
+            >
+            키워드 조합 모드 활성화
+          </label>
+          <p class="help-text">
+            조합 모드가 활성화되면 기본 키워드와 관련 키워드를 결합하여 검색합니다.
+          </p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 정보 섹션 -->
+    <footer class="footer">
+      <p>💡 팁: Bing이 
