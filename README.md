@@ -138,6 +138,8 @@ auto-bing-search-extension/
 
 ## 📖 사용 방법
 
+![Auto Bing Search Extension Screenshot](docs/Screenshot.png)
+
 ### 기본 사용 흐름
 
 1. **Side Panel 열기**: Chrome 우측 상단의 아이콘 클릭
